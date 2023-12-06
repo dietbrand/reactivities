@@ -1,22 +1,12 @@
 import { Button, Item, Label, Segment } from 'semantic-ui-react';
-import { Activity } from '../../../app/models/activity';
 import { SyntheticEvent, useState } from 'react';
+import { useStore } from '../../../app/stores/store';
+import { observer } from 'mobx-react-lite';
 
-interface Props {
-  activities: Activity[];
-  editMode: boolean;
-  submitting: boolean;
-  selectActivity: (id: string) => void;
-  deleteActivity: (id: string) => void;
-}
-const ActivityList = ({
-  activities,
-  selectActivity,
-  editMode,
-  deleteActivity,
-  submitting,
-}: Props) => {
+const ActivityList = () => {
   const [target, setTarget] = useState('');
+  const { activityStore } = useStore();
+  const { deleteActivity, activitiesByDate, loading } = activityStore;
 
   const handleActivityDelete = (
     e: SyntheticEvent<HTMLButtonElement>,
@@ -29,7 +19,7 @@ const ActivityList = ({
   return (
     <Segment>
       <Item.Group divided>
-        {activities.map(activity => (
+        {activitiesByDate.map(activity => (
           <Item key={activity.id}>
             <Item.Content>
               <Item.Header as='a'>{activity.title}</Item.Header>
@@ -42,18 +32,18 @@ const ActivityList = ({
               </Item.Description>
               <Item.Extra>
                 <Button
-                  disabled={editMode}
+                  disabled={activityStore.editMode}
                   floated='right'
                   content='View'
                   color='blue'
-                  onClick={() => selectActivity(activity.id)}
+                  onClick={() => activityStore.selectActivity(activity.id)}
                 />
                 <Button
                   name={activity.id}
                   floated='right'
                   content='Delete'
                   color='red'
-                  loading={submitting && target === activity.id}
+                  loading={loading && target === activity.id}
                   onClick={e => handleActivityDelete(e, activity.id)}
                 />
                 <Label basic content={activity.category} />
@@ -65,4 +55,4 @@ const ActivityList = ({
     </Segment>
   );
 };
-export default ActivityList;
+export default observer(ActivityList);
