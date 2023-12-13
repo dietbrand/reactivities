@@ -6,7 +6,7 @@ const NavBar = () => {
     <Menu inverted fixed='top'>
       <Container>
         <Menu.Item as={NavLink} to='/' header>
-          <img src='assets/logo.png' style={{ marginRight: '10px' }} />
+          <img src='/assets/logo.png' style={{ marginRight: '10px' }} />
           Reactivities
         </Menu.Item>
 
