@@ -9,9 +9,7 @@ interface Props {
 }
 
 const PhotoUploadWidget = ({ loading, uploadPhoto }: Props) => {
-  // We're adding the preview property in the useCallback in PhotoWidgetDropzone
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [files, setFiles] = useState<any>([]);
+  const [files, setFiles] = useState<object & { preview?: string }[]>([]);
 
   const [cropper, setCropper] = useState<Cropper>();
 
@@ -41,7 +39,7 @@ const PhotoUploadWidget = ({ loading, uploadPhoto }: Props) => {
         {files && files.length > 0 && (
           <PhotoWidgetCropper
             setCropper={setCropper}
-            imagePreview={files[0].preview}
+            imagePreview={files[0].preview!}
           />
         )}
       </Grid.Column>
