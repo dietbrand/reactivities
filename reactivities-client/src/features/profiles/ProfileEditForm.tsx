@@ -14,7 +14,7 @@ interface Props {
 
 const ProfileEditForm = ({ setEditMode }: Props) => {
   const {
-    profileStore: { profile, updateProfile },
+    profileStore: { profile, editProfile },
   } = useStore();
   return (
     <Formik
@@ -24,7 +24,7 @@ const ProfileEditForm = ({ setEditMode }: Props) => {
         error: null,
       }}
       onSubmit={(values, { setErrors }) => {
-        updateProfile(values)
+        editProfile(values)
           .then(() => setEditMode(false))
           .catch(error => setErrors({ error }));
       }}

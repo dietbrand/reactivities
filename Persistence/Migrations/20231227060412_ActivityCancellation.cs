@@ -4,26 +4,26 @@
 
 namespace Persistence.Migrations
 {
+  /// <inheritdoc />
+  public partial class ActivityCancellation : Migration
+  {
     /// <inheritdoc />
-    public partial class ActivityCancellation : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsCancelled",
-                table: "Activities",
-                type: "INTEGER",
-                nullable: false,
-                defaultValue: false);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "IsCancelled",
-                table: "Activities");
-        }
+      migrationBuilder.AddColumn<bool>(
+          name: "IsCancelled",
+          table: "Activities",
+          type: "INTEGER",
+          nullable: false,
+          defaultValue: false);
     }
+
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+      migrationBuilder.DropColumn(
+          name: "IsCancelled",
+          table: "Activities");
+    }
+  }
 }
