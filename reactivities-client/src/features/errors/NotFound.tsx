@@ -7,7 +7,7 @@ const NotFound = () => {
       <Header icon>
         <Icon name='search' />
         Oops - we've looked everywhere but couldn't find what you were looking
-        for! Are you Bono?
+        for! Sorry!
       </Header>
       <Segment.Inline>
         <Button as={Link} to='/activities'>
