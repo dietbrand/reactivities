@@ -22,7 +22,6 @@ jobs:
         with:
           push: true
           tags: dietbrand/reactivities:latest
-  name: Fly Deploy
   deploy:
     needs: docker
     name: Deploy app
