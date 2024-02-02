@@ -13,6 +13,7 @@ primary_region = 'ams'
   ASPNETCORE_URLS="http://+:8080"
   Cloudinary__CloudName="dv0h4pala"
   Cloudinary__ApiKey="679259388185949"
+  Sendgrid__User="dietbrand"
 
 [http_service]
   internal_port = 8080

@@ -4,6 +4,7 @@ using Domain;
 using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
 
@@ -15,10 +16,12 @@ namespace API.Extensions
     {
       services.AddIdentityCore<AppUser>(options =>
       {
-        // specify settings you wish to overwrite
         options.Password.RequireNonAlphanumeric = false;
-        options.User.RequireUniqueEmail = true;
-      }).AddEntityFrameworkStores<DataContext>();
+        options.SignIn.RequireConfirmedEmail = true;
+      })
+      .AddEntityFrameworkStores<DataContext>()
+      .AddSignInManager<SignInManager<AppUser>>()
+      .AddDefaultTokenProviders();
 
       var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
@@ -39,22 +42,22 @@ namespace API.Extensions
         {
           OnMessageReceived = context =>
                 {
-                var accessToken = context.Request.Query["access_token"];
-                var path = context.HttpContext.Request.Path;
-                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
-                {
-                  context.Token = accessToken;
-                };
-                return Task.CompletedTask;
-              }
+                  var accessToken = context.Request.Query["access_token"];
+                  var path = context.HttpContext.Request.Path;
+                  if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chat"))
+                  {
+                    context.Token = accessToken;
+                  };
+                  return Task.CompletedTask;
+                }
         };
       });
       services.AddAuthorization(options =>
       {
         options.AddPolicy("IsActivityHost", policy =>
               {
-            policy.Requirements.Add(new IsHostRequirement());
-          });
+                policy.Requirements.Add(new IsHostRequirement());
+              });
       });
       services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
       services.AddScoped<TokenService>();
